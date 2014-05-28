@@ -298,6 +298,29 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
         return mDelegate.getHeaderView(translatePosition(position).mHeader, convertView, parent);
     }
 
+    protected int inverseTranslatePosition(int position) {
+        int numHeaders = mDelegate.getNumHeaders();
+        if (numHeaders == 0) {
+            return position;
+        }
+
+        int place = mNumColumns;
+        for (int i = 0; i < numHeaders; i++) {
+            int sectionCount = mDelegate.getCountForHeader(i);
+            int sectionCountWithFilled = (int)(mNumColumns * Math.ceil(((double)sectionCount) / mNumColumns));
+
+            // Well, the position is located in header i.
+            if (position < sectionCount) {
+                break;
+            }
+
+            place += sectionCountWithFilled + mNumColumns;
+            position -= sectionCount;
+        }
+
+        return place + position;
+    }
+
     protected Position translatePosition(int position) {
         int numHeaders = mDelegate.getNumHeaders();
         if (numHeaders == 0) {

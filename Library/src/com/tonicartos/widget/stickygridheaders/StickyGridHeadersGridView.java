@@ -16,14 +16,6 @@
 
 package com.tonicartos.widget.stickygridheaders;
 
-import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapterWrapper.HeaderFillerView;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -48,6 +40,14 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapterWrapper.HeaderFillerView;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GridView that displays items in sections with headers that stick to the top
@@ -500,6 +500,12 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
         this.mAdapter.registerDataSetObserver(mDataSetObserver);
         reset();
         super.setAdapter(this.mAdapter);
+    }
+
+    @Override
+    public void setItemChecked(int position, boolean value) {
+        super.setItemChecked(
+               mAdapter.inverseTranslatePosition(position), value);
     }
 
     public void setAreHeadersSticky(boolean useStickyHeaders) {
